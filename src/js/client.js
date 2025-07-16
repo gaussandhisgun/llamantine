@@ -1,7 +1,14 @@
 import { Ollama } from 'https://esm.run/ollama/browser'
 
 const converter = new showdown.Converter()
-const ollama = new Ollama({ host: 'http://127.0.0.1:11434' })
+
+var host = localStorage.getItem("host")
+if (host == null || host == undefined) {
+	host = prompt("Enter your Ollama host and port (it will be saved)", "http://127.0.0.1:11434")
+}
+localStorage.setItem("host", host)
+
+const ollama = new Ollama({ host: host })
 const sendbutton = document.getElementById("send")
 const msg = document.getElementById("message")
 const modelpicker = document.getElementById("modelpicker")
@@ -14,9 +21,24 @@ var current_chat = 0
 var chats = []
 chats[current_chat] = []
 
+function setChat(id) {
+	console.log("setChat(" + id + ")")
+	current_chat = id
+	loadChat(id)
+	updateChatList()
+}
+
+function setupChatSwitcher(a, k) {
+	console.log(a)
+	console.log(k)
+	a.onclick = function() {
+		setChat(k);
+	}
+}
+
 function updateChatList() {
 	chatlist.innerHTML = ""
-	for (const i in chats) {
+	for (let i in chats) {
 		var classes = "chat_switcher"
 		if (i.toString() == current_chat.toString()) {
 			classes += ' active_chat'
@@ -24,9 +46,12 @@ function updateChatList() {
 		var name
 		if (chats[i][0] != undefined) {name = chats[i][0].content} else {name = "Empty Chat"}
 		chatlist.innerHTML += '<li class="cs_container"><button class="' + classes + '" id="chat' + i + '">' + name + '</button></li>'
-		document.getElementById("chat"+i).onclick = function() {const c = i; setChat(c)}
 	}
-}
+	for (let i in chats) {
+		const c = document.getElementById("chat"+i)
+		setupChatSwitcher(c, i)
+	}
+} 
 
 function newChat() {
 	current_chat = chats.length
@@ -35,10 +60,6 @@ function newChat() {
 	setChat(current_chat)
 }
 
-function setChat(id) {
-	current_chat = id
-	loadChat(id)
-}
 
 function loadChat(id) {
 	chatview.innerHTML = ""
@@ -47,7 +68,7 @@ function loadChat(id) {
 			chatview.innerHTML += '<li class="message msg_outgoing" id="message' + i + '">' + i.content + '</li>';
 		}
 		if (i.role == "assistant") {
-			chatview.innerHTML += '<li class="message msg_incoming" id="message' + i + '">' + i.content + '</li>';
+			chatview.innerHTML += '<li class="message msg_incoming" id="message' + i + '">' + converter.makeHtml(i.content) + '</li>';
 		}
 	}
 	msgid = chats[id].length
@@ -99,6 +120,8 @@ newbutton.onclick = function() {newChat()}
 updateModelList()
 
 chats = JSON.parse(localStorage.getItem("chats"))
+if(chats == null) {chats = [[]]}
 console.log(chats)
-loadChat(chats.length - 1)
+current_chat = chats.length - 1
+loadChat(current_chat)
 updateChatList()

@@ -52,10 +52,14 @@ button, #modelpicker {
 	font-weight: bold;
 	border-right: 3px solid white;
 }
+.cs_container {
+	height: 30px;
+}
 #new-chat, #modelpicker, .chat_switcher {
 	height: 30px;
 	width: 100%;
 	text-align: left;
+	overflow: clip;
 }
 
 #inputs {
