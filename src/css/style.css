@@ -7,7 +7,7 @@ body {
 	width: 100%;
 	overflow: hidden;
 }
-button {
+button, #modelpicker {
 	border: 0px transparent;
 	border-left: 3px solid red;
 }
@@ -15,6 +15,7 @@ button {
 	width: 320px;
 	height: 100%;
 	border-right: 1px red solid;
+	background-color: white;
 }
 #sidebar > * {
 	display: block;
@@ -38,7 +39,7 @@ button {
 .chatlist {
 	width: 100%;
 }
-#new-chat {
+#new-chat, #modelpicker {
 	height: 30px;
 	width: 100%;
 	text-align: left;
@@ -82,4 +83,19 @@ button {
 	border-right: 3px solid red;
 	border-top: 3px solid red;
 	border-radius: 0 10px;
+}
+@media (max-width: 800px) {
+	#sidebar {
+		position: absolute;
+		top: 0px;
+		left: -300px;
+	}
+	#sidebar:hover {
+		position: absolute;
+		top: 0px;
+		left: 0px;
+	}
+	#chat {
+		margin-left: 20px;
+	}
 }
