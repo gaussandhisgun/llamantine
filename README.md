@@ -1,3 +1,5 @@
+![Llamantine logo](src/favicon.png)
+
 # Llamantine
 A web based [ollama](https://github.com/ollama/ollama) frontend
 
