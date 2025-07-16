@@ -102,6 +102,7 @@ button, #modelpicker {
 	border-top: 3px solid red;
 	border-radius: 0 10px;
 }
+
 @media (max-width: 800px) {
 	#sidebar {
 		position: absolute;
@@ -115,5 +116,12 @@ button, #modelpicker {
 	}
 	#chat {
 		margin-left: 20px;
+	}
+}
+
+@media (prefers-color-scheme: dark) {
+	#sidebar, body, #message, button, select {
+		background: black;
+		color: white;
 	}
 }

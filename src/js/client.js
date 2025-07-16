@@ -81,6 +81,8 @@ async function sendQuery() {
 	msgid += 1;
 	msg.value = "";
 	msg.disabled = true;
+	sendbutton.disabled = true;
+	sendbutton.innerHTML = "Thinking..."
 	chats[current_chat].push({role: 'user', content: query})
 	const response = await ollama.chat({
 		model: modelpicker.value,
@@ -97,6 +99,8 @@ async function sendQuery() {
 	}
 	msgid += 1
 	msg.disabled = false;
+	sendbutton.disabled = false;
+	sendbutton.innerHTML = "Send"
 	localStorage.setItem("chats", JSON.stringify(chats))
 	updateChatList()
 }
