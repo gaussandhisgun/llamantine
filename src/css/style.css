@@ -11,6 +11,12 @@ button, #modelpicker {
 	border: 0px transparent;
 	border-left: 3px solid red;
 }
+.cs_container {
+	margin: 0 0 0 0;
+	padding: 0 0 0 0;
+	display: block;
+	width: 100%;
+}
 #sidebar {
 	width: 320px;
 	height: 100%;
@@ -38,12 +44,20 @@ button, #modelpicker {
 }
 .chatlist {
 	width: 100%;
+	padding-left: 0;
 }
-#new-chat, #modelpicker {
+.active_chat {
+	color: white;
+	background: red;
+	font-weight: bold;
+	border-right: 3px solid white;
+}
+#new-chat, #modelpicker, .chat_switcher {
 	height: 30px;
 	width: 100%;
 	text-align: left;
 }
+
 #inputs {
 	width: 100%;
 	height: 50px;
