@@ -15,6 +15,13 @@ function getCookie(name) {
   return matches ? decodeURIComponent(matches[1]) : undefined;
 }
 
+var sysprompt = localStorage.getItem("sysprompt") || ""
+
+function setSysPrompt() {
+	sysprompt = prompt("Enter new SYSTEM prompt (it will be applied to all of your chats)", sysprompt)
+	localStorage.setItem("sysprompt", sysprompt)
+}
+
 function setCookie(name, value, options = {}) {
   options = {
     path: '/',
@@ -60,6 +67,7 @@ const modelpicker = document.getElementById("modelpicker")
 const chatview = document.getElementById("messages")
 const chatlist = document.getElementById("chatlist")
 const newbutton = document.getElementById("new-chat")
+const syspbutton = document.getElementById("sysprompt-cfg")
 
 var msgid = 0
 var current_chat = 0
@@ -128,10 +136,11 @@ async function sendQuery() {
 	msg.disabled = true;
 	sendbutton.disabled = true;
 	sendbutton.innerHTML = "Thinking..."
+	const sysp = [{role: 'system', content: sysprompt}]
 	chats[current_chat].push({role: 'user', content: query})
 	const response = await ollama.chat({
 		model: modelpicker.value,
-		messages: chats[current_chat],
+		messages: sysp.concat(chats[current_chat]),
 		stream: true,
 	})
 	chatview.innerHTML += '<li class="message msg_incoming" id="message' + msgid + '"></li>';
@@ -165,6 +174,7 @@ msg.addEventListener('keydown', function(event) {
 });
 sendbutton.onclick = function() {sendQuery()}
 newbutton.onclick = function() {newChat()}
+syspbutton.onclick = function() {setSysPrompt()}
 
 updateModelList()
 

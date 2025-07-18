@@ -55,7 +55,7 @@ button, #modelpicker {
 .cs_container {
 	height: 30px;
 }
-#new-chat, #modelpicker, .chat_switcher {
+#new-chat, #modelpicker, .chat_switcher, #sysprompt-cfg {
 	height: 30px;
 	width: 100%;
 	text-align: left;
