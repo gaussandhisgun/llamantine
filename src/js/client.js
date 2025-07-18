@@ -8,7 +8,52 @@ if (host == null || host == undefined) {
 }
 localStorage.setItem("host", host)
 
-const ollama = new Ollama({ host: host })
+function getCookie(name) {
+  let matches = document.cookie.match(new RegExp(
+    "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+  ));
+  return matches ? decodeURIComponent(matches[1]) : undefined;
+}
+
+function setCookie(name, value, options = {}) {
+  options = {
+    path: '/',
+    ...options
+  };
+  if (options.expires instanceof Date) {
+    options.expires = options.expires.toUTCString();
+  }
+  let updatedCookie = encodeURIComponent(name) + "=" + encodeURIComponent(value);
+  for (let optionKey in options) {
+    updatedCookie += "; " + optionKey;
+    let optionValue = options[optionKey];
+    if (optionValue !== true) {
+      updatedCookie += "=" + optionValue;
+    }
+  }
+  document.cookie = updatedCookie;
+}
+
+
+var token = getCookie("token")
+if (token == null || token == undefined) {
+	token = prompt("Enter your Ollama token (or leave as 'None' to not use a token, e.g. for local instances) (it will be saved) (OpenAI API tokens dont work)", "None")
+}
+setCookie("token", token)
+
+var ollama
+if (token != "None") {
+	ollama = new Ollama({
+		host: host,
+		headers: {
+			Authorization: 'Bearer ' + token
+		}
+	})
+} else {
+	ollama = new Ollama({
+		host: host
+	})
+}
 const sendbutton = document.getElementById("send")
 const msg = document.getElementById("message")
 const modelpicker = document.getElementById("modelpicker")
