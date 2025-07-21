@@ -53,12 +53,16 @@ if (token != "None") {
 	ollama = new Ollama({
 		host: host,
 		headers: {
-			Authorization: 'Bearer ' + token
+			Authorization: 'Bearer ' + token,
+			Origin: 'http://localhost'
 		}
 	})
 } else {
 	ollama = new Ollama({
-		host: host
+		host: host,
+		headers: {
+			Origin: 'http://localhost'
+		}
 	})
 }
 const sendbutton = document.getElementById("send")
@@ -160,7 +164,9 @@ async function sendQuery() {
 }
 
 async function updateModelList() {
+	modelpicker.innerHTML = '<option value="error">Failed to connect to Ollama. Make sure your instance is running and allows this website as an origin (envvar OLLAMA_ORIGINS, try setting it to "*")</option>'
 	const list = await ollama.list()
+	modelpicker.innerHTML = ""
 	for (const model of list.models) {
 		modelpicker.innerHTML += '<option value="' + model.model + '">' + model.name + '</option>'
 	}
